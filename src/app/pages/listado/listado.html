@@ -1,0 +1,144 @@
+<section class="border-b border-[#1D2A45] py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <p class="text-violet-400 text-sm font-semibold" style="font-family: 'Chakra Petch', sans-serif;">Catálogo</p>
+    <h1 class="text-3xl font-bold text-white mb-2" style="font-family: 'Chakra Petch', sans-serif;">
+      {{ soloFavoritos() ? 'Tus noticias favoritas' : 'Todas las noticias' }}
+    </h1>
+    <p class="text-slate-400 max-w-xl">Filtra por categoría, busca por palabra clave o gestiona el catálogo desde el panel de administración.</p>
+  </div>
+</section>
+
+<section class="py-10">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="border border-[#1D2A45] bg-[#0D1526] mb-11">
+      <button (click)="mostrarCrud.set(!mostrarCrud())"
+              class="w-full flex items-center justify-between px-6 py-4 text-left">
+        <h3 class="text-white font-semibold">
+          Panel de administración
+          <span class="text-slate-400 text-sm font-normal">— crear y eliminar noticias</span>
+        </h3>
+        <span class="text-cyan-400 text-xl">{{ mostrarCrud() ? '–' : '+' }}</span>
+      </button>
+
+      @if (mostrarCrud()) {
+        <div class="px-6 pb-6 border-t border-[#1D2A45] pt-5">
+          <form (ngSubmit)="crearNoticia()" class="grid md:grid-cols-2 gap-5">
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-xs text-slate-400">Título</label>
+              <input [(ngModel)]="form.titulo" name="titulo"
+                     class="bg-[#101B33] border border-[#1D2A45] text-white px-3 py-2 focus:border-cyan-400 outline-none">
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs text-slate-400">Categoría</label>
+              <select [(ngModel)]="form.categoria" name="categoria"
+                      class="bg-[#101B33] border border-[#1D2A45] text-white px-3 py-2 focus:border-cyan-400 outline-none">
+                <option value="">Selecciona…</option>
+                <option>Hardware</option>
+                <option>Inteligencia Artificial</option>
+                <option>Desarrollo Web</option>
+                <option>Movilidad</option>
+                <option>Sostenibilidad</option>
+                <option>Gaming</option>
+                <option>Ciudades Inteligentes</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-xs text-slate-400">URL de imagen (opcional)</label>
+              <input [(ngModel)]="form.imagen" name="imagen" placeholder="https://…"
+                     class="bg-[#101B33] border border-[#1D2A45] text-white px-3 py-2 focus:border-cyan-400 outline-none">
+            </div>
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-xs text-slate-400">Resumen breve</label>
+              <textarea [(ngModel)]="form.resumen" name="resumen" rows="2"
+                        class="bg-[#101B33] border border-[#1D2A45] text-white px-3 py-2 focus:border-cyan-400 outline-none"></textarea>
+            </div>
+            <div class="md:col-span-2 flex flex-col gap-1">
+              <label class="text-xs text-slate-400">Contenido completo</label>
+              <textarea [(ngModel)]="form.contenido" name="contenido" rows="4"
+                        class="bg-[#101B33] border border-[#1D2A45] text-white px-3 py-2 focus:border-cyan-400 outline-none"></textarea>
+            </div>
+            <div class="md:col-span-2">
+              <button type="submit"
+                      class="px-6 py-3 font-semibold bg-gradient-to-r from-cyan-400 to-violet-500 text-[#04101c]">
+                Publicar noticia
+              </button>
+            </div>
+          </form>
+
+          <div class="mt-6 border-t border-[#1D2A45]">
+            @for (n of todasLasNoticias(); track n.id) {
+              <div class="flex items-center gap-3 py-3 border-b border-[#1D2A45]">
+                <img [src]="n.imagen" class="w-14 h-10 object-cover">
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-white text-sm font-semibold truncate">{{ n.titulo }}</h4>
+                  <span class="text-xs text-slate-400">{{ n.categoria }} · {{ n.fecha }}</span>
+                </div>
+                <button (click)="eliminarNoticia(n.id)"
+                        class="px-3 py-1 text-sm border border-rose-900 text-rose-400 hover:bg-rose-500/10">
+                  Eliminar
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[#1D2A45] mb-8">
+      <div class="flex flex-wrap gap-2">
+        @for (cat of categorias(); track cat) {
+          <button (click)="filtroCategoria.set(cat)"
+                  class="px-4 py-2 text-sm border transition"
+                  [class.border-cyan-400]="filtroCategoria() === cat"
+                  [class.text-cyan-400]="filtroCategoria() === cat"
+                  [class.border-[#1D2A45]]="filtroCategoria() !== cat"
+                  [class.text-slate-400]="filtroCategoria() !== cat">
+            {{ cat === 'todas' ? 'Todas' : cat }}
+          </button>
+        }
+      </div>
+      <input [(ngModel)]="busqueda" [ngModelOptions]="{standalone: true}" placeholder="Buscar noticias…"
+             class="bg-[#101B33] border border-[#1D2A45] text-white px-4 py-2 text-sm min-w-[240px] focus:border-cyan-400 outline-none">
+    </div>
+
+    @if (noticiasFiltradas().length === 0) {
+      <div class="text-center py-16 border border-dashed border-[#1D2A45] text-slate-400">
+        No encontramos noticias con esos filtros.
+      </div>
+    } @else {
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (n of noticiasFiltradas(); track n.id) {
+          <article class="bg-[#0D1526] border border-[#1D2A45] hover:border-violet-500 transition overflow-hidden flex flex-col">
+            <a [routerLink]="['/detalle', n.id]" class="relative block aspect-[16/10] overflow-hidden">
+              <span class="absolute top-3 left-3 text-xs px-2 py-1 border border-cyan-400 text-cyan-400 bg-[#060B18]/80 z-10">
+                {{ n.categoria }}
+              </span>
+              <img [src]="n.imagen" [alt]="n.titulo" class="w-full h-full object-cover">
+            </a>
+            <div class="p-5 flex flex-col gap-3 flex-1">
+              <h3 class="text-white font-semibold leading-snug">
+                <a [routerLink]="['/detalle', n.id]" class="hover:text-cyan-400">{{ n.titulo }}</a>
+              </h3>
+              <p class="text-sm text-slate-400 flex-1">{{ n.resumen }}</p>
+              <div class="flex gap-2 mt-1">
+                <a [routerLink]="['/detalle', n.id]" class="flex-1 text-center py-2 text-sm border border-[#1D2A45] text-white hover:border-cyan-400 hover:text-cyan-400">
+                  Leer más
+                </a>
+                <button (click)="toggleFavorito(n.id)"
+                        class="px-3 border transition"
+                        [class.border-fuchsia-500]="esFavorito(n.id)"
+                        [class.text-fuchsia-500]="esFavorito(n.id)"
+                        [class.border-[#1D2A45]]="!esFavorito(n.id)"
+                        [class.text-white]="!esFavorito(n.id)">
+                  ★
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+
+  </div>
+</section>

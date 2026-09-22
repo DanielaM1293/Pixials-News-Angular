@@ -1,0 +1,115 @@
+<!-- HERO -->
+<section class="border-b border-[#1D2A45] py-14">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-[1.15fr_0.85fr] gap-11 items-center">
+
+    <!-- Columna izquierda: titular -->
+    <div>
+      <span class="inline-block text-xs px-3 py-1 border border-cyan-400 text-cyan-400 bg-cyan-400/5 mb-4">
+        Edición 14 sep. 2026
+      </span>
+      <h1 class="text-4xl md:text-5xl font-bold leading-tight text-white" style="font-family: 'Chakra Petch', sans-serif;">
+        La tecnología que viene,
+        <span class="text-cyan-400" style="text-shadow: 0 0 22px rgba(0,245,255,.55);"> contada hoy</span>.
+      </h1>
+      <p class="text-slate-400 mt-5 mb-8 max-w-md">
+        Pixials News cubre hardware, inteligencia artificial y el desarrollo web que está redefiniendo lo posible — sin relleno, sin ruido.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a routerLink="/listado"
+           class="px-6 py-3 font-semibold bg-gradient-to-r from-cyan-400 to-violet-500 text-[#04101c] hover:shadow-[0_0_24px_rgba(0,245,255,0.45)] transition"
+           style="clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);">
+          Explorar noticias
+        </a>
+      </div>
+    </div>
+
+    <!-- Columna derecha: carrusel -->
+    <div class="relative border border-[#1D2A45] bg-[#0D1526] overflow-hidden aspect-[4/5]"
+         style="clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);">
+
+      @for (n of destacadas(); track n.id; let i = $index) {
+        @if (i === carIndex()) {
+          <div class="absolute inset-0">
+            <img [src]="n.imagen" [alt]="n.titulo" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#060B18] via-transparent to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <span class="inline-block text-xs px-2 py-1 border border-cyan-400 text-cyan-400 bg-[#060B18]/80 mb-2">
+                {{ n.categoria }}
+              </span>
+              <h3 class="text-lg font-semibold text-white mb-2">{{ n.titulo }}</h3>
+              <a [routerLink]="['/detalle', n.id]" class="text-cyan-400 text-sm font-semibold">Leer noticia →</a>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Flechas -->
+      <div class="absolute top-3 right-3 flex gap-2 z-10">
+        <button (click)="anterior()" class="w-8 h-8 bg-[#060B18]/60 border border-[#1D2A45] text-white hover:border-cyan-400 hover:text-cyan-400">←</button>
+        <button (click)="siguiente()" class="w-8 h-8 bg-[#060B18]/60 border border-[#1D2A45] text-white hover:border-cyan-400 hover:text-cyan-400">→</button>
+      </div>
+
+      <!-- Dots -->
+      <div class="absolute left-6 bottom-28 flex gap-2 z-10">
+        @for (n of destacadas(); track n.id; let i = $index) {
+          <button (click)="irA(i)"
+                  class="w-5 h-[3px]"
+                  [class.bg-cyan-400]="i === carIndex()"
+                  [class.bg-[#1D2A45]]="i !== carIndex()"></button>
+        }
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ÚLTIMAS NOTICIAS -->
+<section class="py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex items-end justify-between flex-wrap gap-4 mb-7">
+      <div>
+        <p class="text-violet-400 text-sm font-semibold" style="font-family: 'Chakra Petch', sans-serif;">Lo último</p>
+        <h2 class="text-2xl font-bold text-white" style="font-family: 'Chakra Petch', sans-serif;">Noticias recientes</h2>
+      </div>
+      <a routerLink="/listado" class="px-4 py-2 text-sm border border-[#1D2A45] text-white hover:border-cyan-400 hover:text-cyan-400 transition">
+        Ver todo el catálogo
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      @for (n of recientes(); track n.id) {
+        <article class="bg-[#0D1526] border border-[#1D2A45] hover:border-violet-500 transition overflow-hidden flex flex-col">
+          <a [routerLink]="['/detalle', n.id]" class="relative block aspect-[16/10] overflow-hidden">
+            <span class="absolute top-3 left-3 text-xs px-2 py-1 border border-cyan-400 text-cyan-400 bg-[#060B18]/80 z-10">
+              {{ n.categoria }}
+            </span>
+            <img [src]="n.imagen" [alt]="n.titulo" class="w-full h-full object-cover">
+          </a>
+          <div class="p-5 flex flex-col gap-3 flex-1">
+            <h3 class="text-white font-semibold leading-snug">
+              <a [routerLink]="['/detalle', n.id]" class="hover:text-cyan-400">{{ n.titulo }}</a>
+            </h3>
+            <p class="text-sm text-slate-400 flex-1">{{ n.resumen }}</p>
+            <div class="flex justify-between text-xs text-slate-500">
+              <span>{{ n.autor }}</span>
+              <span>{{ n.fecha }}</span>
+            </div>
+            <div class="flex gap-2 mt-1">
+              <a [routerLink]="['/detalle', n.id]" class="flex-1 text-center py-2 text-sm border border-[#1D2A45] text-white hover:border-cyan-400 hover:text-cyan-400">
+                Leer más
+              </a>
+              <button (click)="toggleFavorito(n.id)"
+                      class="px-3 border transition"
+                      [class.border-fuchsia-500]="esFavorito(n.id)"
+                      [class.text-fuchsia-500]="esFavorito(n.id)"
+                      [class.border-[#1D2A45]]="!esFavorito(n.id)"
+                      [class.text-white]="!esFavorito(n.id)">
+                ★
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

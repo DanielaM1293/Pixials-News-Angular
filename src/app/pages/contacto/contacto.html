@@ -1,0 +1,101 @@
+<section class="border-b border-[#1D2A45] py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <p class="text-violet-400 text-sm font-semibold" style="font-family: 'Chakra Petch', sans-serif;">Hablemos</p>
+    <h1 class="text-3xl font-bold text-white mb-2" style="font-family: 'Chakra Petch', sans-serif;">Contacto</h1>
+    <p class="text-slate-400 max-w-xl">¿Tienes una historia, una corrección o una pregunta sobre alguna noticia? Escríbenos y te respondemos pronto.</p>
+  </div>
+</section>
+
+<section class="py-14">
+  <div class="max-w-6xl mx-auto px-6 grid lg:grid-cols-[0.85fr_1.15fr] gap-12 items-start">
+
+    <div>
+      <h2 class="text-xl font-bold text-white mb-3">Otras formas de escribirnos</h2>
+      <p class="text-slate-400 mb-6">Preferimos el formulario para dar seguimiento ordenado, pero también puedes buscarnos directamente.</p>
+
+      <div class="space-y-5">
+        <div class="flex gap-4">
+          <div class="w-10 h-10 flex items-center justify-center border border-[#1D2A45] text-cyan-400 bg-cyan-400/5 flex-shrink-0">✉</div>
+          <div>
+            <strong class="block text-white text-sm">Correo editorial</strong>
+            <span class="text-sm text-slate-400">redaccion&#64;pixialsnews.dev</span>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="w-10 h-10 flex items-center justify-center border border-[#1D2A45] text-cyan-400 bg-cyan-400/5 flex-shrink-0">⏱</div>
+          <div>
+            <strong class="block text-white text-sm">Tiempo de respuesta</strong>
+            <span class="text-sm text-slate-400">1 a 2 días hábiles</span>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="w-10 h-10 flex items-center justify-center border border-[#1D2A45] text-cyan-400 bg-cyan-400/5 flex-shrink-0">📍</div>
+          <div>
+            <strong class="block text-white text-sm">Redacción</strong>
+            <span class="text-sm text-slate-400">Bogotá, Colombia — trabajo remoto</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="enviar()"
+          class="border border-[#1D2A45] bg-[#0D1526] p-8"
+          style="clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);">
+
+      @if (enviado) {
+        <div class="border border-cyan-400 bg-cyan-400/10 text-white px-4 py-3 mb-5 text-sm">
+          Tu mensaje fue enviado. Gracias por escribirnos — te responderemos pronto.
+        </div>
+      }
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-slate-400">Nombre completo</label>
+          <input [(ngModel)]="form.nombre" name="nombre"
+                 class="bg-[#101B33] border text-white px-3 py-2 outline-none"
+                 [class.border-fuchsia-500]="errores.nombre"
+                 [class.border-[#1D2A45]]="!errores.nombre">
+          <span class="text-xs text-fuchsia-400 min-h-[1em]">{{ errores.nombre }}</span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="text-xs text-slate-400">Correo electrónico</label>
+          <input [(ngModel)]="form.correo" name="correo"
+                 class="bg-[#101B33] border text-white px-3 py-2 outline-none"
+                 [class.border-fuchsia-500]="errores.correo"
+                 [class.border-[#1D2A45]]="!errores.correo">
+          <span class="text-xs text-fuchsia-400 min-h-[1em]">{{ errores.correo }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1 mt-5">
+        <label class="text-xs text-slate-400">Asunto</label>
+        <select [(ngModel)]="form.asunto" name="asunto"
+                class="bg-[#101B33] border text-white px-3 py-2 outline-none"
+                [class.border-fuchsia-500]="errores.asunto"
+                [class.border-[#1D2A45]]="!errores.asunto">
+          <option value="">Selecciona un motivo…</option>
+          <option>Sugerir una noticia</option>
+          <option>Reportar un error</option>
+          <option>Prensa y alianzas</option>
+          <option>Otro</option>
+        </select>
+        <span class="text-xs text-fuchsia-400 min-h-[1em]">{{ errores.asunto }}</span>
+      </div>
+
+      <div class="flex flex-col gap-1 mt-5">
+        <label class="text-xs text-slate-400">Mensaje</label>
+        <textarea [(ngModel)]="form.mensaje" name="mensaje" rows="5"
+                  class="bg-[#101B33] border text-white px-3 py-2 outline-none"
+                  [class.border-fuchsia-500]="errores.mensaje"
+                  [class.border-[#1D2A45]]="!errores.mensaje"></textarea>
+        <span class="text-xs text-fuchsia-400 min-h-[1em]">{{ errores.mensaje }}</span>
+      </div>
+
+      <button type="submit"
+              class="w-full mt-4 px-6 py-3 font-semibold bg-gradient-to-r from-cyan-400 to-violet-500 text-[#04101c]">
+        Enviar mensaje
+      </button>
+    </form>
+
+  </div>
+</section>

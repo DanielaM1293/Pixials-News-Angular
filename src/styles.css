@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+
+/* Barra de scroll personalizada */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060B18;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00F5FF, #8B5CF6);
+  border-radius: 0;
+  border: 2px solid #060B18;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FF3EC8, #8B5CF6);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #00F5FF #060B18;
+}
+
+/* Asegura que el fondo del body cubra toda la altura, incluso con poco contenido */
+html, body {
+  background-color: #060B18;
+  min-height: 100%;
+}

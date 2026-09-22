@@ -1,0 +1,52 @@
+<header class="sticky top-0 z-50 bg-[#060B18]/90 backdrop-blur-md border-b border-[#1D2A45]">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <a routerLink="/" (click)="cerrarMenu()" class="flex items-center gap-3 font-bold text-xl" style="font-family: 'Chakra Petch', sans-serif;">
+      <span class="w-8 h-8 bg-gradient-to-br from-cyan-400 via-violet-500 to-fuchsia-400 shadow-[0_0_18px_rgba(0,245,255,0.55)]"
+            style="clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);"></span>
+      <span class="text-white">PIXIALS <span class="text-cyan-400">NEWS</span></span>
+    </a>
+
+    <!-- Menú de escritorio -->
+    <nav class="hidden md:flex gap-8 text-sm">
+      <a routerLink="/" routerLinkActive="text-white" [routerLinkActiveOptions]="{exact:true}"
+         class="text-slate-400 hover:text-white transition">Inicio</a>
+      <a routerLink="/listado" routerLinkActive="text-white"
+         class="text-slate-400 hover:text-white transition">Noticias</a>
+      <a routerLink="/contacto" routerLinkActive="text-white"
+         class="text-slate-400 hover:text-white transition">Contacto</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a routerLink="/listado" [queryParams]="{filtro: 'favoritos'}" (click)="cerrarMenu()"
+         class="flex items-center gap-1 text-sm text-fuchsia-400 hover:text-fuchsia-300">
+        ★ <span>{{ totalFavoritos() }}</span>
+      </a>
+
+      <!-- Botón hamburguesa: solo visible en móvil -->
+      <button (click)="toggleMenu()" class="md:hidden text-white w-8 h-8 flex items-center justify-center border border-[#1D2A45]">
+        @if (menuAbierto()) {
+          <span class="text-xl leading-none">✕</span>
+        } @else {
+          <span class="text-xl leading-none">☰</span>
+        }
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Menú desplegable móvil -->
+  @if (menuAbierto()) {
+    <nav class="md:hidden border-t border-[#1D2A45] bg-[#0D1526] px-6 py-5 flex flex-col gap-4 text-sm">
+      <a routerLink="/" (click)="cerrarMenu()" routerLinkActive="text-cyan-400" [routerLinkActiveOptions]="{exact:true}"
+         class="text-slate-300 hover:text-cyan-400">Inicio</a>
+      <a routerLink="/listado" (click)="cerrarMenu()" routerLinkActive="text-cyan-400"
+         class="text-slate-300 hover:text-cyan-400">Noticias</a>
+      <a routerLink="/listado" [queryParams]="{filtro: 'favoritos'}" (click)="cerrarMenu()"
+         class="text-slate-300 hover:text-cyan-400">Favoritos</a>
+      <a routerLink="/contacto" (click)="cerrarMenu()" routerLinkActive="text-cyan-400"
+         class="text-slate-300 hover:text-cyan-400">Contacto</a>
+    </nav>
+  }
+
+</header>

@@ -1,0 +1,28 @@
+@if (dialogService.estado(); as d) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-6">
+    <div class="w-full max-w-sm bg-[#0D1526] border border-[#1D2A45] p-6"
+         style="clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);">
+
+      <p class="text-white text-[15px] leading-relaxed mb-6">{{ d.mensaje }}</p>
+
+      <div class="flex gap-3 justify-end">
+        @if (d.tipo === 'confirm') {
+          <button (click)="responder(false)"
+                  class="px-5 py-2 text-sm border border-[#1D2A45] text-slate-300 hover:border-slate-400">
+            Cancelar
+          </button>
+          <button (click)="responder(true)"
+                  class="px-5 py-2 text-sm font-semibold border border-rose-500 text-rose-400 hover:bg-rose-500/10">
+            Eliminar
+          </button>
+        } @else {
+          <button (click)="responder(true)"
+                  class="px-5 py-2 text-sm font-semibold bg-gradient-to-r from-cyan-400 to-violet-500 text-[#04101c]">
+            Entendido
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
+}
