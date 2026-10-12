@@ -42,4 +42,4 @@ export class Detalle {
     if (actual) this.noticiasService.toggleFavorito(actual.id);
   }
 }
-}
+
